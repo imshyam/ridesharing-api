@@ -25,7 +25,8 @@ const userSchema = new Schema({
         default: Date.now
     },
     session_key: {
-        type: String
+        type: String,
+        default: 'EMPTY'
     }
 });
 
