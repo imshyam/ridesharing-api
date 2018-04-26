@@ -1,0 +1,22 @@
+{
+  "name": "ridesharing-api",
+  "version": "1.0.0",
+  "description": "Sample APIs for ridesharing app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imshyam/ridesharing-api.git"
+  },
+  "author": "Shyam",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/imshyam/ridesharing-api/issues"
+  },
+  "homepage": "https://github.com/imshyam/ridesharing-api#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
