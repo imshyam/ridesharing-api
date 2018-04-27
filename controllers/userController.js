@@ -5,18 +5,24 @@ const mongoose = require('mongoose');
 const User = mongoose.model('Users');
 
 exports.try_signup = function(req, res) {
-    User.find({'username': req.params.username}, function(err, user){
+    User.find({username: req.params.username}, function(err, user){
         if(err)
             res.send("Username already exists.");
-        var user = new User(req.body);
-        res.json(user);
+        var new_user = new User(req.body);
+        new_user.save(function(err, user) {
+            if (err)
+                res.send(err);
+            res.json(user);
+        });
     });
 };
 
 exports.try_signin = function(req, res) {
-    res.params.session_key = "apple";
-    User.find({'username': req.params.username, 
-               'password': req.params.password}, 
+    console.log(req.body);
+    req.body.session_key = "apple";
+    console.log(req.body);
+    User.findOneAndUpdate({username: req.params.username, 
+               password: req.params.password}, 
                 req.body, {new: true},function(err, user){
         if(err)
             res.send("Username or Password Don't Match.");
@@ -26,11 +32,14 @@ exports.try_signin = function(req, res) {
 
 exports.try_signout = function(req, res) {
     User.find({'username': req.params.username, 
-               'session_key': req.params.session_key}, 
-               req.body, {new: true},function(err, user){
+               'session_key': req.params.session_key}, function(err, user){
         if(err)
             res.send("You are Not Logged In.");
-        res.params.session_key = "EMPTY";
-        res.json(user);
+        user.session_key = "EMPTY";
+        user.save(function (err, updatedUser) {
+            if (err) 
+                return "Unable to sign out.";
+            res.send(updatedUser);
+        });
     });
 };
