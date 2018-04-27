@@ -3,13 +3,13 @@
 module.exports = function(app) {
     var users = require('../controllers/userController');
 
-    app.route('signup/:fullname/:username/:email/:password')
+    app.route('/signup')
         .post(users.try_signup);
 
-    app.route('/user/:userId/:password')
+    app.route('/signin')
         .put(users.try_signin);
 
-    app.route('/logout/:username/:sid')
+    app.route('/signout')
         .put(users.try_signout);
 
 }
