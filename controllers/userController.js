@@ -23,28 +23,29 @@ exports.try_signup = function(req, res) {
 };
 
 exports.try_signin = function(req, res) {
-    console.log(req.body);
     req.body.session_key = "apple";
-    console.log(req.body);
-    User.findOneAndUpdate({username: req.params.username, 
-               password: req.params.password}, 
+    User.findOneAndUpdate({username: req.body.username, 
+               password: req.body.password}, 
                 req.body, {new: true},function(err, user){
         if(err)
-            res.send("Username or Password Don't Match.");
+            res.send(err);
+        if(user.length < 1){
+            res.send("Username or password is wrong.");
+        }
         res.json(user);
     });
 };
 
 exports.try_signout = function(req, res) {
-    User.find({'username': req.params.username, 
-               'session_key': req.params.session_key}, function(err, user){
-        if(err)
-            res.send("You are Not Logged In.");
-        user.session_key = "EMPTY";
-        user.save(function (err, updatedUser) {
-            if (err) 
-                return "Unable to sign out.";
-            res.send(updatedUser);
-        });
-    });
+    User.update({'username': req.body.username, 
+                 'session_key': req.body.session_key}, 
+                { $set: { session_key: 'EMPTY' }}, 
+                function(err, user) {
+                    if(err) 
+                        res.send(err);
+                    if(user.nModified > 0)
+                        res.send("Signed Out.")
+                    else 
+                        res.json("Not logged in.");}
+    );
 };
