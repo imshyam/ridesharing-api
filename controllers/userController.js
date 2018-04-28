@@ -37,8 +37,8 @@ exports.try_signin = function(req, res) {
 };
 
 exports.try_signout = function(req, res) {
-    User.update({'username': req.body.username, 
-                 'session_key': req.body.session_key}, 
+    User.update({username: req.body.username, 
+                 session_key: req.body.session_key}, 
                 { $set: { session_key: 'EMPTY' }}, 
                 function(err, user) {
                     if(err) 
