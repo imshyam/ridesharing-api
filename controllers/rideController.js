@@ -8,7 +8,26 @@ const StatusDetail = ["Ride requested",
                     "Picking up", 
                     "Ride on", 
                     "Dropped"];
-
+function add_new_ride(req, res, driver) {
+    var x_source = req.body.x_source;
+    var y_source = req.body.y_source;
+    var x_destination = req.body.x_destination;
+    var y_destination = req.body.y_destination;
+    var status = 0;
+    var new_ride = new Ride();
+    new_ride.username = req.body.username;
+    new_ride.driver_username = driver;
+    new_ride.x_source = x_source;
+    new_ride.y_source = y_source;
+    new_ride.x_destination = x_destination;
+    new_ride.y_destination = y_destination;
+    new_ride.ride_status = status;
+    new_ride.save(function(err, ride) {
+        if (err)
+            res.send(err);
+        res.send({status: StatusDetail[status], rider: ride.username, driver: driver, time: '18 mins'});
+    });
+}
 exports.request_ride = function(req, res) {
     User.find({username: req.body.username, 
                session_key: req.body.session_key}, function(err, user){
@@ -26,25 +45,25 @@ exports.request_ride = function(req, res) {
                 if(ride && (ride.ride_status == 0 || ride.ride_status == 1 || ride.ride_status == 2)){
                     res.send("Only one ride at a time.");
                 } else {
-                    var x_source = '42.345';
-                    var y_source = '74.314';
-                    var x_destination = '43.232';
-                    var y_destination = '75.392';
-                    var ride_no = '5367'
-                    var status = 0;
-                    var ride_status = StatusDetail[status];
-                    var new_ride = new Ride();
-                    new_ride.username = req.body.username;
-                    new_ride.ride_no = ride_no;
-                    new_ride.x_source = x_source;
-                    new_ride.y_source = y_source;
-                    new_ride.x_destination = x_destination;
-                    new_ride.y_destination = y_destination;
-                    new_ride.ride_status = status;
-                    new_ride.save(function(err, ride) {
-                        if (err)
+                    var driver = "";
+                    // Get Free Driver
+                    User.find({is_driver: true}, function(err, user){
+                        if(err)
                             res.send(err);
-                        res.send({status: ride_status, by: ride.username, time: '18 mins'});
+                        var br = false;
+                        for(var i in user){
+                            driver = user[i].username;
+                            Ride.findOne({driver_username: user[i].username}, {}, { sort: { 'updated_at' : -1 } },
+                                 function(err, ride){
+                                    if(err)
+                                        res.send(err);
+                                    if(ride == null || ride.ride_status == 3){
+                                        add_new_ride(req, res, driver);
+                                    } else if(i == user.length - 1) {
+                                        res.send("Driver NOT FOUND.");
+                                    }
+                            });
+                        }
                     });
                 }
             });
@@ -61,7 +80,7 @@ function updateRideStatus(req, res, old_status, new_status) {
         if(user.length < 1){
             res.send("Please Signin to accept a ride");
         } else {
-            Ride.findOne({ride_no: req.body.username}, {}, { sort: { 'updated_at' : -1 } },
+            Ride.findOne({driver_username: req.body.username}, {}, { sort: { 'updated_at' : -1 } },
             function(err, ride){
                 if(err) {
                     res.send(err);
@@ -95,7 +114,7 @@ exports.complete_ride = function(req, res) {
 };
 
 exports.get_ride_status = function(req, res) {
-    Ride.findOne({ride_no: req.params.ride_no}, {}, { sort: { 'updated_at' : -1 } },
+    Ride.findOne({username: req.params.user}, {}, { sort: { 'updated_at' : -1 } },
     function(err, ride){
         if(err) {
             res.send(err);

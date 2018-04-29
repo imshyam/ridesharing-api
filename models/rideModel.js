@@ -8,9 +8,9 @@ const rideSchema = new Schema({
         type: String,
         required: 'Select A username'
     },
-    ride_no: {
+    driver_username: {
         type: String,
-        required: 'Not a valid ride number'
+        required: 'Not a valid driver'
     },
     x_source: {
         type: String,
