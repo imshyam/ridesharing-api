@@ -14,6 +14,7 @@ module.exports = function(app) {
 
     app.route('/complete_ride')
         .put(ride.complete_ride);
+        
     app.route('/status/:ride_no')
         .get(ride.get_ride_status);
 }
