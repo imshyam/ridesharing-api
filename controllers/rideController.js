@@ -18,12 +18,12 @@ exports.request_ride = function(req, res) {
         if(user.length < 1){
             res.send("Please Signin to book a ride");
         } else {
-            Ride.find({username: req.body.username},
+            Ride.findOne({username: req.body.username}, {}, { sort: { 'updated_at' : -1 } },
                  function(err, ride){
                 if(err) {
                     res.send(err);
                 }
-                if(ride.ride_status != 3){
+                if(ride.ride_status == 0 || ride.ride_status == 1 || ride.ride_status == 2){
                     res.send("Only one ride at a time.");
                 } else {
                     var x_source = '42.345';
@@ -50,4 +50,45 @@ exports.request_ride = function(req, res) {
             });
         }
     });
+};
+
+// username and session_key, driver's
+exports.accept_ride = function(req, res) {
+    User.find({username: req.body.username, 
+        session_key: req.body.session_key}, function(err, user){
+        if(err) {
+            res.send(err);
+        }
+        if(user.length < 1){
+            res.send("Please Signin to accept a ride");
+        } else {
+            Ride.findOne({ride_no: req.body.username}, {}, { sort: { 'updated_at' : -1 } },
+            function(err, ride){
+                if(err) {
+                    res.send(err);
+                }
+                console.log(ride);
+                if(ride.ride_status == 0){
+                    ride.ride_status = 1;
+                    ride.save(function (err, updatedRide) {
+                        if (err) 
+                            res.status(401).send(err);
+                        res.status(200).send(updatedRide);
+                    });
+                } else {
+                    res.send("Not a valid action.");
+                }
+            });
+        }
+    });
+};
+
+exports.pick_up_rider = function(req, res) {
+
+};
+
+exports.complete_ride = function(req, res) {
+};
+
+exports.get_ride_status = function(req, res) {
 };
