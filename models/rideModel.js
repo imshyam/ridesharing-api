@@ -12,18 +12,32 @@ const rideSchema = new Schema({
         type: String,
         required: 'Not a valid ride number'
     },
-    longitude: {
-        type: Number,
+    x_source: {
+        type: String,
         required: 'Not a valid longitude'
     },
-    latitude: {
-        type: Number,
+    y_source: {
+        type: String,
+        required: 'Not a valid longitude'
+    },
+    x_destination: {
+        type: String,
         required: 'Not a valid latitude'
     },
-    ride_status: {
+    y_destination: {
         type: String,
+        required: 'Not a valid latitude'
+    },
+    /*
+    * 0: ride requested
+    * 1: picking up
+    * 2: ride on
+    * 3: dropped
+    */
+    ride_status: {
+        type: Number,
         required: 'Not a valid status'
     }
 });
 
-module.exports = mongoose.model('RideStatus', rideSchema);
+module.exports = mongoose.model('RideStatusModel', rideSchema);
