@@ -24,8 +24,8 @@ function add_new_ride(req, res, driver) {
     new_ride.ride_status = status;
     new_ride.save(function(err, ride) {
         if (err)
-            res.send(err);
-        res.send({status: StatusDetail[status], rider: ride.username, driver: driver, time: '18 mins'});
+            res.status(401).send(err);
+        res.status(200).send({status: StatusDetail[status], rider: ride.username, driver: driver, time: '18 mins'});
     });
 }
 exports.request_ride = function(req, res) {
