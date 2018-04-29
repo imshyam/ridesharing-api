@@ -14,7 +14,7 @@ Start the application using : `npm start`
 ---
 These are the working endpoints: 
 -  http://localhost:3000/signup [`post`] 
-**args**: `fullname, username, email, password`
+**args**: `fullname, username, email, password` (if driver is signing up => *is_driver, car_no*)
 - http://localhost:3000/signin [`put`] 
 **args**: `username, password`
 - http://localhost:3000/signout [`put`]
@@ -27,5 +27,5 @@ These are the working endpoints:
 **args**: `username, session_key` (*username will be the username of driver, it's equal to the ride_no assigned in the last step*)
 - http://localhost:3000/complete_ride [`put`]
 **args**: `username, session_key` (*username will be the username of driver, it's equal to the ride_no assigned in the last step*)
-- http://localhost:3000/status/ride_no [`get`]
-**args**: `ride_no`
+- http://localhost:3000/status/username [`get`]
+**args**: `username`
