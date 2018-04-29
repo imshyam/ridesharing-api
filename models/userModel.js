@@ -27,6 +27,14 @@ const userSchema = new Schema({
     session_key: {
         type: String,
         default: 'EMPTY'
+    },
+    is_driver: {
+        type: Boolean,
+        default: false
+    },
+    car_no: {
+        type: String,
+        default: ""
     }
 });
 
