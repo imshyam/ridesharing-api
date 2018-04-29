@@ -52,8 +52,7 @@ exports.request_ride = function(req, res) {
     });
 };
 
-// username and session_key, driver's
-exports.accept_ride = function(req, res) {
+function updateRideStatus(req, res, old_status, new_status) {
     User.find({username: req.body.username, 
         session_key: req.body.session_key}, function(err, user){
         if(err) {
@@ -68,26 +67,32 @@ exports.accept_ride = function(req, res) {
                     res.send(err);
                 }
                 console.log(ride);
-                if(ride.ride_status == 0){
-                    ride.ride_status = 1;
+                if(ride.ride_status == old_status){
+                    ride.ride_status = new_status;
                     ride.save(function (err, updatedRide) {
                         if (err) 
                             res.status(401).send(err);
                         res.status(200).send({status: StatusDetail[ride.ride_status], by: ride.username, time: '18 mins'});
                     });
                 } else {
-                    res.send("Not a valid action.");
+                    res.send("Not a valid action or you are not logged in.");
                 }
             });
         }
     });
+}
+
+// username and session_key, driver's
+exports.accept_ride = function(req, res) {
+    updateRideStatus(req, res, 0, 1);
 };
 
 exports.pick_up_rider = function(req, res) {
-
+    updateRideStatus(req, res, 1, 2);
 };
 
 exports.complete_ride = function(req, res) {
+    updateRideStatus(req, res, 2, 3);
 };
 
 exports.get_ride_status = function(req, res) {

@@ -8,4 +8,10 @@ module.exports = function(app) {
 
     app.route('/accept_ride')
         .put(ride.accept_ride);
+    
+    app.route('/start_ride')
+        .put(ride.pick_up_rider);
+
+    app.route('/complete_ride')
+        .put(ride.complete_ride);
 }
