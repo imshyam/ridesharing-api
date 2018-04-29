@@ -2,7 +2,9 @@ const express = require("express");
 const mongoose = require('mongoose');
 
 const User = require('./models/userModel');
-const routes = require('./routes/userRoutes');
+const Ride = require('./models/rideModel');
+const user_routes = require('./routes/userRoutes');
+const ride_routes = require('./routes/rideRoute');
 
 const bodyParser = require('body-parser');
 
@@ -14,7 +16,8 @@ mongoose.connect('mongodb://localhost/UserDB');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-routes(app);
+user_routes(app);
+ride_routes(app);
 
 app.get((req, res) => res.send("Done"));
 
