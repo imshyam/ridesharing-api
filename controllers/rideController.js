@@ -5,7 +5,7 @@ const Ride = mongoose.model('RideStatusModel');
 const User = mongoose.model('Users');
 
 const StatusDetail = ["Ride requested", 
-                    "picking up", 
+                    "Picking up", 
                     "Ride on", 
                     "Dropped"];
 
@@ -23,7 +23,7 @@ exports.request_ride = function(req, res) {
                 if(err) {
                     res.send(err);
                 }
-                if(ride.ride_status == 0 || ride.ride_status == 1 || ride.ride_status == 2){
+                if(ride && (ride.ride_status == 0 || ride.ride_status == 1 || ride.ride_status == 2)){
                     res.send("Only one ride at a time.");
                 } else {
                     var x_source = '42.345';
@@ -73,7 +73,7 @@ exports.accept_ride = function(req, res) {
                     ride.save(function (err, updatedRide) {
                         if (err) 
                             res.status(401).send(err);
-                        res.status(200).send(updatedRide);
+                        res.status(200).send({status: StatusDetail[ride.ride_status], by: ride.username, time: '18 mins'});
                     });
                 } else {
                     res.send("Not a valid action.");
