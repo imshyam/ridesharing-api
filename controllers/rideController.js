@@ -66,7 +66,6 @@ function updateRideStatus(req, res, old_status, new_status) {
                 if(err) {
                     res.send(err);
                 }
-                console.log(ride);
                 if(ride.ride_status == old_status){
                     ride.ride_status = new_status;
                     ride.save(function (err, updatedRide) {
@@ -96,4 +95,11 @@ exports.complete_ride = function(req, res) {
 };
 
 exports.get_ride_status = function(req, res) {
+    Ride.findOne({ride_no: req.params.ride_no}, {}, { sort: { 'updated_at' : -1 } },
+    function(err, ride){
+        if(err) {
+            res.send(err);
+        }
+        res.status(200).send({status: StatusDetail[ride.ride_status], by: ride.username, time: '18 mins'});
+    });
 };
