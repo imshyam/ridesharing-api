@@ -34,6 +34,10 @@ const rideSchema = new Schema({
     * 2: ride on
     * 3: dropped
     */
+   updated_at: {
+        type: Date,
+        default: Date.now
+    },
     ride_status: {
         type: Number,
         required: 'Not a valid status'
