@@ -22,10 +22,10 @@ These are the working endpoints:
 - http://localhost:3000/req_ride [`post`]
 **args**: `username, session_key, x_start, y_start, x_end, y_end` (*x = latitude, y = longitude*)
 - http://localhost:3000/accept_ride [`put`]
-**args**: `username, session_key` (*username will be the username of driver, it's equal to the ride_no assigned in the last step*)
+**args**: `username, session_key` (*username of driver*)
 - http://localhost:3000/start_ride [`put`]
-**args**: `username, session_key` (*username will be the username of driver, it's equal to the ride_no assigned in the last step*)
+**args**: `username, session_key` (*username of driver*)
 - http://localhost:3000/complete_ride [`put`]
-**args**: `username, session_key` (*username will be the username of driver, it's equal to the ride_no assigned in the last step*)
+**args**: `username, session_key` (*username of driver*)
 - http://localhost:3000/status/username [`get`]
 **args**: `username`
