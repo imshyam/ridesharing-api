@@ -14,7 +14,7 @@ Start the application using : `npm start`
 ---
 These are the working endpoints: 
 -  http://localhost:3000/signup [`post`] 
-**args**: `fullname, username, email, password` (if driver is signing up => *is_driver, car_no*)
+**args**: `fullname, username, email, password` (if driver is signing up => `is_driver, car_no`)
 - http://localhost:3000/signin [`put`] 
 **args**: `username, password`
 - http://localhost:3000/signout [`put`]
